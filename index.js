@@ -50,14 +50,34 @@ async function run() {
         });
 
         //Order API
-
-
         app.post('/orders', async (req, res) => {
             const order = req.body;
             const result = await ordersCollection.insertOne(order)
             res.send(result);
 
         })
+
+        app.get('/orders', async (req, res) => {
+            let query = {};
+            if (req.query.email) {
+                query = {
+                    email: req.query.email
+                }
+
+            }
+            const cursor = ordersCollection.find(query);
+            const orders = await cursor.toArray()
+            res.send(orders)
+        })
+
+        // const { orders, setOrders } = useState({})
+        // useEffect(() => {
+        //     fetch(`http://localhost:5000/orders?email=${user.email}`)
+        //         .then(res => res.json())
+        //         .then(data => setOrders(data))
+
+
+        // }, [])
 
 
 
