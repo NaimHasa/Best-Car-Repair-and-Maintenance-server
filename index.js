@@ -70,16 +70,12 @@ async function run() {
             res.send(orders)
         })
 
-        // const { orders, setOrders } = useState({})
-        // useEffect(() => {
-        //     fetch(`http://localhost:5000/orders?email=${user.email}`)
-        //         .then(res => res.json())
-        //         .then(data => setOrders(data))
-
-
-        // }, [])
-
-
+        app.delete('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await ordersCollection.deleteOne(query)
+            res.send(result);
+        })
 
 
 
