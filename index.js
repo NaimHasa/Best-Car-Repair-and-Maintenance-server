@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const app = express();
+const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 5000;
 require('dotenv').config();
 
@@ -33,6 +34,23 @@ async function run() {
     try {
         const serviceCollection = client.db('geniusCar').collection('services');
         const ordersCollection = client.db('geniusCar').collection('orders');
+
+
+        //jwt
+        app.post('/jwt', async (req, res) => {
+            const user = req.body;
+            // console.log(user)
+
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,
+                {
+                    expiresIn: '1h'
+                });
+
+            res.send({ token })
+        })
+
+        // service API start 
+
 
         app.get('/services', async (req, res) => {
             const query = {};
@@ -94,6 +112,9 @@ async function run() {
             const result = await ordersCollection.deleteOne(query)
             res.send(result);
         })
+
+
+        //Service API end
 
 
 
