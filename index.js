@@ -63,7 +63,7 @@ async function run() {
 
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,
                 {
-                    expiresIn: '1h'
+                    expiresIn: '1hr'
                 });
 
             res.send({ token })
@@ -96,6 +96,9 @@ async function run() {
         })
 
         app.get('/orders', verifyJWT, async (req, res) => {
+            const decoded = req.decoded;
+            console.log('come back after verify', decoded)
+
             let query = {};
             if (req.query.email) {
                 query = {
